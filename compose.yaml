@@ -1,0 +1,44 @@
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: php8.2
+    volumes:
+        - /etc/docker_image_config:/usr/local/etc
+        - /var/www/html:/var/www/html
+    container_name: php
+    expose:
+      - "9000"
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: nginx
+    container_name: nginx
+    depends_on:
+      - php
+    ports:
+      - "80:80"
+    volumes:
+      - /etc/hosts:/etc/hosts
+      - /etc/docker_image_config/nginx:/etc/nginx
+      - /var/www/html:/usr/share/nginx/html
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: mysql
+    ports:
+      - "3306:3306"
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+    volumes:
+      - /etc/docker_image_config/mysql/my.cnf:/etc/my.cnf
+      - /etc/docker_image_config/mysql/my.cnf.d:/etc/my.cnf.d
+      - /etc/docker_image_config/mysql/conf.d:/etc/mysql/conf.d
+      #数据存储位置
+      - /etc/docker_image_config/mysql/data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
