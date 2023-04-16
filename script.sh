@@ -111,8 +111,7 @@ function compose {
 		sudo rm -rf README.md
 		sudo docker compose up -d
 		if [ $? == 0 ];then
-			sudo rm -rf Dockerfile
-                	echo "安装成功"
+      echo "安装成功"
 			sudo docker compose ps -a
 			echo "注意：要执行docker compose 相关命令，必须在compose.yaml文件所属目录下执行，命令才会生效，否则会报错(no configuration file provided: not found)"
 		else
