@@ -4,6 +4,7 @@ phpServer="php:fpm"
 phpConfigPath=/dockerConfig/php
 nginxConfigPath=/dockerConfig/nginx
 mysqlConfigPath=/dockerConfig/mysql
+mysqlPass=123456
 nowDir=$(basename $(pwd))
 function installPhp {
 sudo docker buildx build -t $phpServer -<<EOF
@@ -53,9 +54,10 @@ function installNginx {
 	configText nginx $nginxConfigPath
 }
 function installMysql {
+  dbisSetPass
 sudo docker buildx build -t mysql -<<EOF
 FROM mysql
-ENV MYSQL_ROOT_PASSWORD=123456
+ENV MYSQL_ROOT_PASSWORD=$mysqlPass
 EOF
 	run mysql mysql
 	mkdirNotDir $mysqlConfigPath
@@ -65,7 +67,18 @@ EOF
 	ps
 	echo "https://hub.docker.com/_/mysql"
 	configText mysql $mysqlConfigPath
-	echo "mysql初始账户密码：root:123456"
+	echo "mysql初始账户密码：root:${mysqlPass}"
+}
+function dbisSetPass {
+   read -p "是否设置root账户密码,默认是${mysqlPass}（y/n）：" isSetPass
+   if [ $isSetPass == "y"  ];then
+        read -sp "请设置密码：" password
+        if [ ${#password} == 0 ];then
+          echo "不能为空，请重新输入！"
+        else
+          mysqlPass=$password
+        fi
+    fi
 }
 #拉取镜像
 function pull {
@@ -102,6 +115,7 @@ function mkdirNotDir {
 	fi
 }
 function compose {
+  dbisSetPass
 	curl -OL https://github.com/liuguodong1019/docker-nmp/archive/refs/heads/main.zip
 	if [ $? == 0 ];then
                 unzip main.zip
@@ -139,11 +153,11 @@ do
             installMysql
             break
             ;;
-	"all")
-	    compose
-            break
-            ;;
-        *)
+      	"all")
+      	    compose
+                  break
+                  ;;
+              *)
             echo "输入错误，请重新输入"
     esac
 done
