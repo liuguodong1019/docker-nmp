@@ -123,7 +123,15 @@ function compose {
 		sudo mv docker-nmp-main/* ./
 		sudo rm -rf docker-nmp-main/
 		sudo rm -rf README.md
-		sudo docker compose up -d
+    read -p "使用的是虚拟机吗？（y/n）：" isVm
+    if [ $isVm == "y" ];then
+      sudo rm -rf compose.yaml
+      sudo docker compose -f compose-vm.yaml up -d
+    else 
+      sudo rm -rf compose-vm.yaml
+      sudo docker compose up -d
+    fi
+		
 		if [ $? == 0 ];then
       echo "安装成功"
 			sudo docker compose ps -a
