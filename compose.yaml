@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
       target: php8.2
     volumes:
-        - /etc/dockerConfig:/usr/local/etc
+        - /etc/dockerConfig/php:/usr/local/etc
         - /var/www/html:/var/www/html
     container_name: php
     expose:

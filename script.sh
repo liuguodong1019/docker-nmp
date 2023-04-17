@@ -118,7 +118,7 @@ function compose {
   dbisSetPass
 	curl -OL https://github.com/liuguodong1019/docker-nmp/archive/refs/heads/main.zip
 	if [ $? == 0 ];then
-                unzip main.zip
+    unzip main.zip
 		sudo rm -rf main.zip
 		sudo mv docker-nmp-main/* ./
 		sudo rm -rf docker-nmp-main/
