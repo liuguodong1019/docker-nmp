@@ -126,12 +126,11 @@ function compose {
     read -p "使用的是虚拟机吗？（y/n）：" isVm
     if [ $isVm == "y" ];then
       sudo rm -rf compose.yaml
-      sudo docker compose -f compose-vm.yaml up -d
+      sudo mv compose-vm.yaml compose.yaml
     else 
       sudo rm -rf compose-vm.yaml
-      sudo docker compose up -d
     fi
-		
+		sudo docker compose up -d
 		if [ $? == 0 ];then
       echo "安装成功"
 			sudo docker compose ps -a
