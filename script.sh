@@ -56,7 +56,7 @@ function installNginx {
 	configText nginx $nginxConfigPath
 }
 function installMysql {
-  dbisSetPass
+  dbisSetPass $1
 sudo docker buildx build -t mysql -<<EOF
 FROM mysql
 ENV MYSQL_ROOT_PASSWORD=$mysqlPass
@@ -72,8 +72,9 @@ EOF
 	echo "mysql初始账户密码：root:${mysqlPass}"
 }
 function dbisSetPass {
-   read -p "是否设置root账户密码,默认是${mysqlPass}（y/n）：" isSetPass
-   if [ $isSetPass == "y"  ];then
+  if [ $# == 0 ];then
+    read -p "是否设置root账户密码,默认是${mysqlPass}（y/n）：" isSetPass
+    if [ $isSetPass == "y"  ];then
         read -sp "请设置密码：" password
         if [ ${#password} == 0 ];then
           echo "不能为空，请重新输入！"
@@ -81,6 +82,7 @@ function dbisSetPass {
           mysqlPass=$password
         fi
     fi
+  fi
 }
 #拉取镜像
 function pull {
@@ -100,7 +102,7 @@ function del {
 }
 #删除镜像
 function rmi {
-	sudo docker rmi $1
+	sudo docker image rm $1
 }
 function ps {
 	sudo docker ps -a
@@ -117,7 +119,16 @@ function mkdirNotDir {
 	fi
 }
 function compose {
-  dbisSetPass
+    installPhp
+    del php
+    rmi $phpServer
+    installNginx
+    del nginx
+    rmi nginx:latest
+    installMysql no
+    del mysql
+    rmi mysql:latest
+    dbisSetPass
 	curl -OL https://github.com/liuguodong1019/docker-nmp/archive/refs/heads/master.zip
 	if [ $? == 0 ];then
     unzip master.zip
@@ -146,6 +157,7 @@ function compose {
 		fi
         fi
 }
+
 echo "请选择需要安装的服务，输入序号即可"
 select name in "php" "nginx" "mysql" "all"
 do
