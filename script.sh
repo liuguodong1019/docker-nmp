@@ -120,10 +120,10 @@ function compose {
   dbisSetPass
 	curl -OL https://github.com/liuguodong1019/docker-nmp/archive/refs/heads/master.zip
 	if [ $? == 0 ];then
-    unzip main.zip
-		sudo rm -rf main.zip
-		sudo mv docker-nmp-main/* ./
-		sudo rm -rf docker-nmp-main/
+    unzip master.zip
+		sudo rm -rf master.zip
+		sudo mv docker-nmp-master/* ./
+		sudo rm -rf docker-nmp-master/
 		sudo rm -rf README.md
     read -p "使用的是虚拟机吗？（y/n）：" isVm
     if [ $isVm == "y" ];then
