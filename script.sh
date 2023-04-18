@@ -118,7 +118,7 @@ function mkdirNotDir {
 }
 function compose {
   dbisSetPass
-	curl -OL https://github.com/liuguodong1019/docker-nmp/archive/refs/heads/main.zip
+	curl -OL https://github.com/liuguodong1019/docker-nmp/archive/refs/heads/master.zip
 	if [ $? == 0 ];then
     unzip main.zip
 		sudo rm -rf main.zip
