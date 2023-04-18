@@ -23,7 +23,8 @@ services:
     volumes:
       - /etc/hosts:/etc/hosts
       - /etc/dockerConfig/nginx:/etc/nginx
-      - /var/www/html:/usr/share/nginx/html
+      - /etc/dockerConfig/nginx/log:/var/log/nginx
+      - /var/www/html:/var/www/html
   db:
     build:
       context: .

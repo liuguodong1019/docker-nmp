@@ -46,9 +46,11 @@ function installNginx {
 	pull nginx
 	run nginx nginx
    	mkdirNotDir $nginxConfigPath
+    mkdirNotDir $nginxConfigPath/log
    	copy nginx:/etc/nginx/.  $nginxConfigPath
+    copy nginx:/var/log/nginx/. $nginxConfigPath/log
    	del nginx
-	sudo docker run --name nginx -v $nginxConfigPath:/etc/nginx -v $projectPath:/usr/share/nginx/html -v /etc/hosts:/etc/hosts -p 8080:8080 -d nginx
+	sudo docker run --name nginx -v $nginxConfigPath:/etc/nginx -v $projectPath:$projectPath -v /etc/hosts:/etc/hosts  -v $nginxConfigPath/log:/var/log/nginx -p 8080:8080 -d nginx
 	ps
 	echo "https://hub.docker.com/_/nginx"
 	configText nginx $nginxConfigPath
