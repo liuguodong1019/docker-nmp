@@ -39,8 +39,8 @@ services:
       MYSQL_ROOT_PASSWORD: 123456
     volumes:
       - /etc/dockerConfig/mysql/my.cnf:/etc/my.cnf
-      - /etc/dockerConfig/mysql/my.cnf.d:/etc/my.cnf.d
-      - /etc/dockerConfig/mysql/conf.d:/etc/mysql/conf.d
+      #- /etc/dockerConfig/mysql/my.cnf.d:/etc/my.cnf.d
+      #- /etc/dockerConfig/mysql/conf.d:/etc/mysql/conf.d
       #数据存储位置
       - /etc/dockerConfig/mysql/data:/var/lib/mysql
     command: --default-authentication-plugin=mysql_native_password
