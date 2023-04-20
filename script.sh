@@ -119,6 +119,7 @@ function mkdirNotDir {
 	fi
 }
 function compose {
+    dbisSetPass no
     installPhp
     del php
     rmi $phpServer
@@ -128,7 +129,6 @@ function compose {
     installMysql no
     del mysql
     rmi mysql:latest
-    dbisSetPass
 	curl -OL https://github.com/liuguodong1019/docker-nmp/archive/refs/heads/master.zip
 	if [ $? == 0 ];then
     unzip master.zip
@@ -151,6 +151,7 @@ function compose {
 		else
 			sudo docker compose stop
 			sudo docker compose rm -f
+            # docker rmi -f $(docker images -q) //该命令会先列出所有镜像的ID，并强制删除它们
 			sudo docker image rm ${nowDir}-db:latest
 			sudo docker image rm ${nowDir}-nginx:latest
 			sudo docker image rm ${nowDir}-php:latest
