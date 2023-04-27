@@ -104,6 +104,10 @@ function del {
 function rmi {
 	sudo docker image rm $1
 }
+#删除所有镜像
+function rmiAll {
+  sudo docker rmi $(sudo docker images -q)
+}
 function ps {
 	sudo docker ps -a
 }
