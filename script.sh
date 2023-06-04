@@ -1,6 +1,6 @@
 #!/bin/bash
 projectPath=/var/www/html
-phpServer="php:fpm"
+phpServer="php:8.0-fpm"
 phpConfigPath=/dockerConfig/php
 nginxConfigPath=/dockerConfig/nginx
 mysqlConfigPath=/dockerConfig/mysql
@@ -133,19 +133,19 @@ function compose {
     installMysql no
     del mysql
     rmi mysql:latest
-	curl -OL https://github.com/liuguodong1019/docker-nmp/archive/refs/heads/master.zip
+	# curl -OL https://github.com/liuguodong1019/docker-nmp/archive/refs/heads/master.zip
 	if [ $? == 0 ];then
-    unzip master.zip
-		sudo rm -rf master.zip
-		sudo mv docker-nmp-master/* ./
-		sudo rm -rf docker-nmp-master/
-		sudo rm -rf README.md
+  #   unzip master.zip
+		# sudo rm -rf master.zip
+		# sudo mv docker-nmp-master/* ./
+		# sudo rm -rf docker-nmp-master/
+		# sudo rm -rf README.md
     read -p "使用的是虚拟机吗？（y/n）：" isVm
     if [ $isVm == "y" ];then
-      sudo rm -rf compose.yaml
+      # sudo rm -rf compose.yaml
       sudo mv compose-vm.yaml compose.yaml
-    else 
-      sudo rm -rf compose-vm.yaml
+    # else 
+      # sudo rm -rf compose-vm.yaml
     fi
 		sudo docker compose up -d
 		if [ $? == 0 ];then
