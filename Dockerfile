@@ -1,4 +1,4 @@
-FROM php:8.2-fpm as php8.2
+FROM php:8.0-fpm as php8.0
 RUN apt-get update && apt-get install -y \
                libfreetype6-dev \
                libjpeg62-turbo-dev \

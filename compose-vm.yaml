@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: php8.2
+      target: php8.0
     volumes:
         - /dockerConfig/php:/usr/local/etc
         - /var/www/html:/var/www/html
