@@ -1,11 +1,12 @@
 #!/bin/bash
 projectPath=/var/www/html
 phpServer="php:8.0-fpm"
-phpConfigPath=/dockerConfig/php
-nginxConfigPath=/dockerConfig/nginx
-mysqlConfigPath=/dockerConfig/mysql
+phpConfigPath=/etc/dockerConfig/php
+nginxConfigPath=/etc/dockerConfig/nginx
+mysqlConfigPath=/etc/dockerConfig/mysql
 mysqlPass=123456
 nowDir=$(basename $(pwd))
+sudo mkdir -p projectPath
 function installPhp {
 sudo docker buildx build -t $phpServer -<<EOF
 FROM $phpServer
@@ -142,10 +143,10 @@ function compose {
 		# sudo rm -rf README.md
     read -p "使用的是虚拟机吗？（y/n）：" isVm
     if [ $isVm == "y" ];then
-      # sudo rm -rf compose.yaml
+      sudo rm -rf compose.yaml
       sudo mv compose-vm.yaml compose.yaml
-    # else 
-      # sudo rm -rf compose-vm.yaml
+    else 
+      sudo rm -rf compose-vm.yaml
     fi
 		sudo docker compose up -d
 		if [ $? == 0 ];then

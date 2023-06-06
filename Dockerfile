@@ -21,26 +21,6 @@ FROM nginx as nginx
 FROM mysql:latest as mysql
 ENV MYSQL_ROOT_PASSWORD=123456
 
-FROM golang as builder
-WORKDIR /app
-ENV GOPROXY https://goproxy.cn
-ENV GIT_REMOTE https://github.com/liuguodong1019/meeting/archive/refs/heads/master.zip
-RUN apt update && apt install -y \
-        unzip \
-        curl \
-        && curl -OL $GIT_REMOTE \
-        && unzip master.zip \
-        && rm -rf master.zip \
-        && cd meeting-master \
-	&& go mod download \
-	&& cd cmd \
-	&& CGO_ENABLED=0 GOOS=linux go build -o /mt
-FROM scratch AS meeting
-WORKDIR /
-COPY --from=builder /mt /mt
-EXPOSE 8080
-#USER nonroot:nonroot
-ENTRYPOINT ["/mt"]
 
 FROM golang as goweb
 WORKDIR /app

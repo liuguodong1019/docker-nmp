@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
       target: php8.0
     volumes:
-        - /dockerConfig/php:/usr/local/etc
+        - /etc/dockerConfig/php:/usr/local/etc
         - /var/www/html:/var/www/html
     container_name: php
     expose:
@@ -22,7 +22,7 @@ services:
       - "80:80"
     volumes:
       - /etc/hosts:/etc/hosts
-      - /dockerConfig/nginx:/etc/nginx
+      - /etc/dockerConfig/nginx:/etc/nginx
       - /var/www/html:/var/www/html
   db:
     build:
@@ -35,10 +35,10 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 123456
     volumes:
-      - /dockerConfig/mysql/my.cnf:/etc/my.cnf
-      #- /dockerConfig/mysql/my.cnf.d:/etc/my.cnf.d
-      #- /dockerConfig/mysql/conf.d:/etc/mysql/conf.d
+      - /etc/dockerConfig/mysql/my.cnf:/etc/my.cnf
+      #- /etc/dockerConfig/mysql/my.cnf.d:/etc/my.cnf.d
+      #- /etc/dockerConfig/mysql/conf.d:/etc/mysql/conf.d
       #数据存储位置
-      - /dockerConfig/mysql/data:/var/lib/mysql
+      - /etc/dockerConfig/mysql/data:/var/lib/mysql
     command: --default-authentication-plugin=mysql_native_password
     restart: always
